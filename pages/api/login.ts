@@ -17,13 +17,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   );
 
-  const data = await response.json();
+  const jsonData = await response.json();
 
   if (!response.ok) {
-    return res.status(response.status).json({ error: data.message });
+    return res.status(response.status).json({ error: jsonData.message });
   }
 
-  const sessionCookie = serialize('__sess', data.accessToken, {
+  const sessionCookie = serialize('__sess', jsonData.data.accessToken, {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
@@ -31,11 +31,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     path: '/',
   });
 
-  console.log(sessionCookie);
-
   res.setHeader('Set-Cookie', sessionCookie);
 
-  return res.status(response.status).json({ data: data.user });
+  return res.status(response.status).json({ data: jsonData.data.user });
 };
 
 export default handler;

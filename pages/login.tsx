@@ -1,13 +1,39 @@
+import { login } from '@api/auth/login';
+import { me } from '@api/user/me';
 import FormButton from '@components/FormButton';
 import FormInput from '@components/FormInput';
 import FormLink from '@components/FormLink';
+import InlineSpinner from '@components/InlineSpinner';
+import {
+  dehydrate,
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { FormEventHandler } from 'react';
 
 const LoginPage = () => {
+  const router = useRouter();
+
+  const queryClient = useQueryClient();
+
+  const loginMutation = useMutation({
+    mutationFn: (body: string) => login(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['me']);
+      router.push('/');
+    },
+  });
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
-    console.log(Object.fromEntries(formData));
+    const requestBody = JSON.stringify(Object.fromEntries(formData));
+
+    loginMutation.mutate(requestBody);
   };
 
   return (
@@ -35,12 +61,37 @@ const LoginPage = () => {
           minLength={8}
         />
 
-        <FormButton>Login</FormButton>
+        <FormButton>
+          Login {loginMutation.isLoading ? <InlineSpinner /> : null}
+        </FormButton>
 
         <FormLink href="/register">Create a new account</FormLink>
       </form>
     </main>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const accessToken = req.cookies.__sess;
+
+  const queryClient = new QueryClient();
+
+  const data = await queryClient.fetchQuery(['me'], () => me(accessToken));
+
+  if (accessToken && data) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    };
+  }
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default LoginPage;

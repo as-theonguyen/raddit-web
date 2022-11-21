@@ -1,13 +1,39 @@
+import { register } from '@api/auth/register';
+import { me } from '@api/user/me';
 import FormButton from '@components/FormButton';
 import FormInput from '@components/FormInput';
 import FormLink from '@components/FormLink';
+import InlineSpinner from '@components/InlineSpinner';
+import {
+  dehydrate,
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { FormEventHandler } from 'react';
 
 const RegisterPage = () => {
+  const router = useRouter();
+
+  const queryClient = useQueryClient();
+
+  const registerMutation = useMutation({
+    mutationFn: (body: string) => register(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['me']);
+      router.push('/');
+    },
+  });
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
-    console.log(Object.fromEntries(formData));
+    const requestBody = JSON.stringify(Object.fromEntries(formData));
+
+    registerMutation.mutate(requestBody);
   };
 
   return (
@@ -43,12 +69,38 @@ const RegisterPage = () => {
           minLength={8}
         />
 
-        <FormButton>Create a new account</FormButton>
+        <FormButton>
+          Create a new account{' '}
+          {registerMutation.isLoading ? <InlineSpinner /> : null}
+        </FormButton>
 
         <FormLink href="/login">Login instead</FormLink>
       </form>
     </main>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const accessToken = req.cookies.__sess;
+
+  const queryClient = new QueryClient();
+
+  const data = await queryClient.fetchQuery(['me'], () => me(accessToken));
+
+  if (accessToken && data) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    };
+  }
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default RegisterPage;
