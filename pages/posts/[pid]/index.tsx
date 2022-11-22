@@ -1,6 +1,8 @@
 import { getCommentsByPost } from '@api/comment/get-comments-by-post';
 import { getOnePost } from '@api/post/get-one-post';
+import { me } from '@api/user/me';
 import Comment from '@components/Comment';
+import NewCommentForm from '@components/NewCommentForm';
 import { CommentType } from '@response-types/comment';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
@@ -23,6 +25,11 @@ const PostPage = () => {
     enabled: !!postQuery.data.id,
   });
 
+  const meQuery = useQuery({
+    queryKey: ['me'],
+    queryFn: () => me(),
+  });
+
   if (postQuery.isLoading || commentsByPostQuery.isLoading)
     return <div>Loading...</div>;
 
@@ -34,6 +41,8 @@ const PostPage = () => {
         <ReactMarkdown>{postQuery.data.content}</ReactMarkdown>
       </section>
 
+      {meQuery.data ? <NewCommentForm pid={pid as string} /> : null}
+
       {commentsByPostQuery.data.map((comment: CommentType) => {
         return <Comment key={comment.id} comment={comment} />;
       })}
@@ -41,14 +50,24 @@ const PostPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  params,
+}) => {
   const { pid } = params!;
+
+  const authorization = req.cookies.__sess;
 
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: ['post', pid],
     queryFn: () => getOnePost(pid as string),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['me'],
+    queryFn: () => me(authorization),
   });
 
   return {
