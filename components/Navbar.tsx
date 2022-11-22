@@ -18,19 +18,24 @@ const Navbar = () => {
     },
   });
 
-  const meQuery = useQuery(['me'], () => me());
+  const meQuery = useQuery({
+    queryKey: ['me'],
+    queryFn: () => me(),
+  });
 
   if (meQuery.isLoading) return <nav>Loading...</nav>;
 
   return (
-    <nav className="bg-white p-6 flex justify-end">
+    <nav className="bg-white p-6 flex justify-end border-b border-gray-300">
       {meQuery.data ? (
-        <button
-          className="hover:underline hover:text-rose-600"
-          onClick={() => logoutMutation.mutate(false)}
-        >
-          Logout {logoutMutation.isLoading ? <InlineSpinner /> : null}
-        </button>
+        <div>
+          <button
+            className="hover:underline hover:text-rose-600"
+            onClick={() => logoutMutation.mutate(false)}
+          >
+            Logout {logoutMutation.isLoading ? <InlineSpinner /> : null}
+          </button>
+        </div>
       ) : (
         <div className="flex gap-6">
           <NavLink href="/login">Login</NavLink>
