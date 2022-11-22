@@ -42,8 +42,8 @@ const NewCommentForm = ({ pid }: Props) => {
         required
         className="border border-gray-400 outline-none focus:border-blue-600 p-4 rounded-md resize-none h-48 w-full"
       />
-      <FormButton type="submit">
-        Add comment {addCommentMutation.isLoading ? <InlineSpinner /> : null}
+      <FormButton loading={addCommentMutation.isLoading}>
+        Add comment
       </FormButton>
     </form>
   );

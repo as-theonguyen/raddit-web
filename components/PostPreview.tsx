@@ -1,22 +1,17 @@
-import { PostType } from '@response-types/post';
-import { useRouter } from 'next/router';
+import ReactMarkdown from 'react-markdown';
 
 interface Props {
-  post: PostType;
+  title: string;
+  content: string;
 }
 
-const PostPreview = ({ post }: Props) => {
-  const router = useRouter();
-
+const PostPreview = ({ title, content }: Props) => {
   return (
-    <article className="bg-white border border-gray-300 p-4 rounded-md w-11/12 max-w-2xl">
-      <h3
-        className="font-bold text-xl cursor-pointer hover:text-blue-600 hover:underline"
-        onClick={() => router.push(`/posts/${post.id}`)}
-      >
-        {post.title}
-      </h3>
-      <p>{post.user.username}</p>
+    <article>
+      <h1 className="font-bold text-4xl mb-10">{title || '(Sample title)'}</h1>
+      <ReactMarkdown className="prose">
+        {content || 'Sample content'}
+      </ReactMarkdown>
     </article>
   );
 };

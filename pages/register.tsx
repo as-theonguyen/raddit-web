@@ -69,9 +69,8 @@ const RegisterPage = () => {
           minLength={8}
         />
 
-        <FormButton>
-          Create a new account{' '}
-          {registerMutation.isLoading ? <InlineSpinner /> : null}
+        <FormButton loading={registerMutation.isLoading}>
+          Create a new account
         </FormButton>
 
         <FormLink href="/login">Login instead</FormLink>

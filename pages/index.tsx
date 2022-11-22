@@ -2,7 +2,7 @@ import { getAllPosts } from '@api/post/get-all-post';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { PostType } from '@response-types/post';
 import { GetServerSideProps } from 'next';
-import PostPreview from '@components/PostPreview';
+import PostSnippet from '@components/PostSnippet';
 
 const Homepage = () => {
   const postsQuery = useQuery({
@@ -15,7 +15,7 @@ const Homepage = () => {
   return (
     <main className="flex flex-col items-center gap-4 min-h-screen w-full py-4 px-2">
       {postsQuery.data.map((post: PostType) => {
-        return <PostPreview key={post.id} post={post} />;
+        return <PostSnippet key={post.id} post={post} />;
       })}
     </main>
   );

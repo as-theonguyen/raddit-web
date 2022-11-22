@@ -28,7 +28,11 @@ const Navbar = () => {
   return (
     <nav className="bg-white p-6 flex justify-end border-b border-gray-300">
       {meQuery.data ? (
-        <div>
+        <div className="flex gap-4">
+          <NavLink href="/feed">Feed</NavLink>
+
+          <NavLink href="/posts/new">Create a new post</NavLink>
+
           <button
             className="hover:underline hover:text-rose-600"
             onClick={() => logoutMutation.mutate(false)}

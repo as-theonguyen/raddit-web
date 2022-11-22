@@ -61,9 +61,7 @@ const LoginPage = () => {
           minLength={8}
         />
 
-        <FormButton>
-          Login {loginMutation.isLoading ? <InlineSpinner /> : null}
-        </FormButton>
+        <FormButton loading={loginMutation.isLoading}>Login</FormButton>
 
         <FormLink href="/register">Create a new account</FormLink>
       </form>

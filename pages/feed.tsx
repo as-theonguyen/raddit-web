@@ -1,6 +1,6 @@
 import { feed } from '@api/user/feed';
 import { me } from '@api/user/me';
-import PostPreview from '@components/PostPreview';
+import PostSnippet from '@components/PostSnippet';
 import { PostType } from '@response-types/post';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
@@ -22,7 +22,7 @@ const FeedPage = () => {
   return (
     <main className="flex flex-col items-center gap-4 min-h-screen w-full py-4 px-2">
       {feedQuery.data.map((post: PostType) => {
-        return <PostPreview key={post.id} post={post} />;
+        return <PostSnippet key={post.id} post={post} />;
       })}
     </main>
   );
