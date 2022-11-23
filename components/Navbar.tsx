@@ -26,7 +26,9 @@ const Navbar = () => {
   if (meQuery.isLoading) return <nav>Loading...</nav>;
 
   return (
-    <nav className="bg-white p-6 flex justify-end border-b border-gray-300">
+    <nav className="bg-white p-6 flex justify-between border-b border-gray-300">
+      <NavLink href="/">Home</NavLink>
+
       {meQuery.data ? (
         <div className="flex gap-4">
           <NavLink href="/feed">Feed</NavLink>

@@ -23,7 +23,7 @@ const RegisterPage = () => {
     mutationFn: (body: string) => register(body),
     onSuccess: () => {
       queryClient.invalidateQueries(['me']);
-      router.push('/');
+      router.push('/feed');
     },
   });
 

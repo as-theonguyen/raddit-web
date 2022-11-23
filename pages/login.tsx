@@ -23,7 +23,7 @@ const LoginPage = () => {
     mutationFn: (body: string) => login(body),
     onSuccess: () => {
       queryClient.invalidateQueries(['me']);
-      router.push('/');
+      router.push('/feed');
     },
   });
 

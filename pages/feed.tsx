@@ -4,6 +4,7 @@ import PostSnippet from '@components/PostSnippet';
 import { PostType } from '@response-types/post';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 
 const FeedPage = () => {
   const meQuery = useQuery({
@@ -19,11 +20,26 @@ const FeedPage = () => {
 
   if (feedQuery.isLoading) return <div>Loading...</div>;
 
+  const emptyFeed = feedQuery.data.length === 0;
+
   return (
     <main className="flex flex-col items-center gap-4 min-h-screen w-full py-4 px-2">
-      {feedQuery.data.map((post: PostType) => {
-        return <PostSnippet key={post.id} post={post} />;
-      })}
+      {!emptyFeed ? (
+        feedQuery.data.map((post: PostType) => {
+          return <PostSnippet key={post.id} post={post} />;
+        })
+      ) : (
+        <p>
+          Your feed is empty, start{' '}
+          <Link href="/users" className="text-blue-600 hover:underline">
+            following people
+          </Link>{' '}
+          or go to{' '}
+          <Link href="/" className="text-blue-600 hover:underline">
+            all posts page
+          </Link>
+        </p>
+      )}
     </main>
   );
 };
