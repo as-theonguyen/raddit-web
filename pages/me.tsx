@@ -1,5 +1,6 @@
 import { me } from '@api/user/me';
 import { updateUser } from '@api/user/update-user';
+import { getOneUser } from '@api/user/get-one-user';
 import FormButton from '@components/FormButton';
 import FormInput from '@components/FormInput';
 import {
@@ -10,8 +11,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
-import Link from 'next/link';
 import { FormEventHandler } from 'react';
+import ProfileLink from '@components/ProfileLink';
 
 const MePage = () => {
   const queryClient = useQueryClient();
@@ -19,6 +20,12 @@ const MePage = () => {
   const meQuery = useQuery({
     queryKey: ['me'],
     queryFn: () => me(),
+  });
+
+  const userQuery = useQuery({
+    queryKey: ['user', meQuery.data.id],
+    queryFn: () => getOneUser(meQuery.data.id),
+    enabled: !!meQuery.data,
   });
 
   const updateUserMutation = useMutation({
@@ -58,12 +65,18 @@ const MePage = () => {
           <h2 className="font-bold text-xl">Your information</h2>
           <p>Email: {meQuery.data.email}</p>
           <p>Username: {meQuery.data.username}</p>
-          <Link
-            href={`/users/${meQuery.data.id}/posts`}
-            className="hover:underline text-blue-600"
-          >
+
+          <ProfileLink href={`/users/${meQuery.data.id}/followers`}>
+            Followed by {userQuery.data.followerCount} user(s)
+          </ProfileLink>
+
+          <ProfileLink href={`/users/${meQuery.data.id}/followees`}>
+            Following {userQuery.data.followeeCount} user(s)
+          </ProfileLink>
+
+          <ProfileLink href={`/users/${meQuery.data.id}/posts`}>
             All your posts
-          </Link>
+          </ProfileLink>
         </section>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -129,6 +142,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
   }
+
+  await queryClient.prefetchQuery({
+    queryKey: ['user', data.id],
+    queryFn: () => getOneUser(data.id),
+  });
 
   return {
     props: {

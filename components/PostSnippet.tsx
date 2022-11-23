@@ -39,7 +39,12 @@ const PostSnippet = ({ post }: Props) => {
         >
           {post.title}
         </h3>
-        <p>{post.user.username}</p>
+        <Link
+          href={`/users/${post.user.id}`}
+          className="hover:underline hover:text-blue-600"
+        >
+          {post.user.username}
+        </Link>
       </div>
 
       <div className="flex gap-2 items-center">
