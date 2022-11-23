@@ -1,17 +1,51 @@
+import { addNewPost } from '@api/post/add-new-post';
 import { me } from '@api/user/me';
-import NewPostForm from '@components/NewPostForm';
+import PostForm from '@components/PostForm';
 import PostPreview from '@components/PostPreview';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { dehydrate, QueryClient, useMutation } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { FormEventHandler, useState } from 'react';
+
+const initialContent = `
+  ## H2 heading
+  ### H3 heading
+  normal text
+
+  - list item 1
+  - list item 2
+
+  \`\`\`
+  npm install
+  \`\`\`
+
+  Read more about Markdown [here](https://www.markdownguide.org/getting-started/)
+`;
 
 const NewPostPage = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('Sample title');
+  const [content, setContent] = useState(initialContent);
   const [preview, setPreview] = useState(false);
+
+  const router = useRouter();
+
+  const addNewPostMutation = useMutation({
+    mutationFn: (body: string) => addNewPost(body),
+    onSuccess: (data) => {
+      router.push(`/posts/${data.id}`);
+    },
+  });
 
   const togglePreview = () => {
     setPreview((prev) => !prev);
+  };
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    const requestBody = JSON.stringify({ title, content });
+
+    addNewPostMutation.mutate(requestBody);
   };
 
   return (
@@ -20,7 +54,11 @@ const NewPostPage = () => {
         {preview ? (
           <PostPreview title={title} content={content} />
         ) : (
-          <NewPostForm
+          <PostForm
+            handleSubmit={handleSubmit}
+            isSubmitting={addNewPostMutation.isLoading}
+            buttonText="Publish"
+            formTitle="Create a new post"
             title={title}
             content={content}
             setTitle={setTitle}

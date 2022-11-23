@@ -8,10 +8,8 @@ interface Props {
 const PostPreview = ({ title, content }: Props) => {
   return (
     <article>
-      <h1 className="font-bold text-4xl mb-10">{title || '(Sample title)'}</h1>
-      <ReactMarkdown className="prose">
-        {content || 'Sample content'}
-      </ReactMarkdown>
+      <h1 className="font-bold text-4xl mb-10">{title}</h1>
+      <ReactMarkdown className="prose">{content}</ReactMarkdown>
     </article>
   );
 };

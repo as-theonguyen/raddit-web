@@ -46,7 +46,14 @@ const PostPage = () => {
       {meQuery.data ? <NewCommentForm pid={pid as string} /> : null}
 
       {commentsByPostQuery.data.map((comment: CommentType) => {
-        return <Comment key={comment.id} comment={comment} />;
+        return (
+          <Comment
+            postId={pid as string}
+            currentUserId={meQuery.data.id}
+            key={comment.id}
+            comment={comment}
+          />
+        );
       })}
     </main>
   );

@@ -1,40 +1,33 @@
-import { addNewPost } from '@api/post/add-new-post';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import { Dispatch, FormEventHandler, SetStateAction } from 'react';
 import FormButton from './FormButton';
 
 interface Props {
+  formTitle: string;
+  buttonText: string;
   title: string;
   content: string;
+  isSubmitting?: boolean;
   setTitle: Dispatch<SetStateAction<string>>;
   setContent: Dispatch<SetStateAction<string>>;
+  handleSubmit: FormEventHandler<HTMLFormElement>;
 }
 
-const NewPostForm = ({ title, content, setTitle, setContent }: Props) => {
-  const router = useRouter();
-
-  const addNewPostMutation = useMutation({
-    mutationFn: (body: string) => addNewPost(body),
-    onSuccess: (data) => {
-      router.push(`/posts/${data.id}`);
-    },
-  });
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    const requestBody = JSON.stringify({ title, content });
-
-    addNewPostMutation.mutate(requestBody);
-  };
-
+const PostForm = ({
+  title,
+  content,
+  formTitle,
+  setTitle,
+  setContent,
+  buttonText,
+  handleSubmit,
+  isSubmitting,
+}: Props) => {
   return (
     <form
       onSubmit={handleSubmit}
       className="flex flex-col gap-10 items-center w-full"
     >
-      <h2 className="font-bold text-2xl">Create a new post</h2>
+      <h2 className="font-bold text-2xl">{formTitle}</h2>
 
       <div className="flex gap-2 flex-col w-full">
         <label htmlFor="title">Title</label>
@@ -60,9 +53,9 @@ const NewPostForm = ({ title, content, setTitle, setContent }: Props) => {
         />
       </div>
 
-      <FormButton loading={addNewPostMutation.isLoading}>Publish</FormButton>
+      <FormButton loading={isSubmitting}>{buttonText}</FormButton>
     </form>
   );
 };
 
-export default NewPostForm;
+export default PostForm;
