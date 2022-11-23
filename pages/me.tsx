@@ -10,6 +10,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { FormEventHandler } from 'react';
 
 const MePage = () => {
@@ -57,6 +58,12 @@ const MePage = () => {
           <h2 className="font-bold text-xl">Your information</h2>
           <p>Email: {meQuery.data.email}</p>
           <p>Username: {meQuery.data.username}</p>
+          <Link
+            href={`/users/${meQuery.data.id}/posts`}
+            className="hover:underline text-blue-600"
+          >
+            All your posts
+          </Link>
         </section>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
