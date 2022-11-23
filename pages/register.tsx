@@ -1,9 +1,9 @@
 import { register } from '@api/auth/register';
 import { me } from '@api/user/me';
+import ErrorBox from '@components/ErrorBox';
 import FormButton from '@components/FormButton';
 import FormInput from '@components/FormInput';
 import FormLink from '@components/FormLink';
-import InlineSpinner from '@components/InlineSpinner';
 import {
   dehydrate,
   QueryClient,
@@ -43,6 +43,11 @@ const RegisterPage = () => {
         className="flex flex-col w-11/12 max-w-md items-center gap-10 bg-white py-10 px-6 rounded-md shadow-md"
       >
         <h2 className="font-bold text-2xl">Create a new account</h2>
+
+        {registerMutation.isError ? (
+          // @ts-ignore
+          <ErrorBox message={registerMutation.error!.message!} />
+        ) : null}
 
         <FormInput
           type="email"

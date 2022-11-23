@@ -13,6 +13,7 @@ import {
 import { GetServerSideProps } from 'next';
 import { FormEventHandler } from 'react';
 import ProfileLink from '@components/ProfileLink';
+import ErrorBox from '@components/ErrorBox';
 
 const MePage = () => {
   const queryClient = useQueryClient();
@@ -81,6 +82,11 @@ const MePage = () => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <h2 className="font-bold text-xl">Update your information</h2>
+
+          {updateUserMutation.isError ? (
+            // @ts-ignore
+            <ErrorBox message={updateUserMutation.error!.message!} />
+          ) : null}
 
           <FormInput type="email" name="email" id="email" label="Email" />
 

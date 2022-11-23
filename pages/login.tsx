@@ -1,5 +1,6 @@
 import { login } from '@api/auth/login';
 import { me } from '@api/user/me';
+import ErrorBox from '@components/ErrorBox';
 import FormButton from '@components/FormButton';
 import FormInput from '@components/FormInput';
 import FormLink from '@components/FormLink';
@@ -43,6 +44,11 @@ const LoginPage = () => {
         className="flex flex-col w-11/12 max-w-md items-center gap-10 bg-white py-10 px-6 rounded-md shadow-md"
       >
         <h2 className="font-bold text-2xl">Login</h2>
+
+        {loginMutation.isError ? (
+          // @ts-ignore
+          <ErrorBox message={loginMutation.error!.message!} />
+        ) : null}
 
         <FormInput
           type="email"
