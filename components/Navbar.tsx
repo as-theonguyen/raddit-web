@@ -31,6 +31,8 @@ const Navbar = () => {
         <div className="flex gap-4">
           <NavLink href="/feed">Feed</NavLink>
 
+          <NavLink href="/me">{meQuery.data.username}</NavLink>
+
           <NavLink href="/posts/new">Create a new post</NavLink>
 
           <button
