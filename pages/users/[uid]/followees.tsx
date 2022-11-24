@@ -26,7 +26,7 @@ const FolloweesPage = () => {
   return (
     <main className="flex flex-col items-center gap-4 min-h-screen w-full py-4 px-2">
       <h2 className="font-bold text-2xl">
-        {userQuery.data.user.username}'s followees
+        {userQuery.data.user.username}&apos;s followees
       </h2>
 
       {followeesQuery.data.map((u: UserType) => {

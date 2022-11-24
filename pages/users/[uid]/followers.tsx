@@ -26,7 +26,7 @@ const FollowersPage = () => {
   return (
     <main className="flex flex-col items-center gap-4 min-h-screen w-full py-4 px-2">
       <h2 className="font-bold text-2xl">
-        {userQuery.data.user.username}'s followers
+        {userQuery.data.user.username}&apos;s followers
       </h2>
 
       {followersQuery.data.map((u: UserType) => {
