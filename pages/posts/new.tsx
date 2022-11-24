@@ -8,18 +8,18 @@ import { useRouter } from 'next/router';
 import { FormEventHandler, useState } from 'react';
 
 const initialContent = `
-  ## H2 heading
-  ### H3 heading
-  normal text
+## H2 heading
+### H3 heading
+normal text
 
-  - list item 1
-  - list item 2
+- list item 1
+- list item 2
 
-  \`\`\`
-  npm install
-  \`\`\`
+\`\`\`
+npm install
+\`\`\`
 
-  Read more about Markdown [here](https://www.markdownguide.org/getting-started/)
+Read more about Markdown [here](https://www.markdownguide.org/getting-started/)
 `;
 
 const NewPostPage = () => {
@@ -49,8 +49,8 @@ const NewPostPage = () => {
   };
 
   return (
-    <main className="w-full h-screen flex gap-4 justify-center items-center">
-      <div className="w-11/12 max-w-4xl bg-white p-8 border border-gray-200 flex flex-col gap-10">
+    <main className="w-full min-h-screen flex gap-4 justify-center items-center">
+      <div className="w-11/12 max-w-4xl bg-white p-8 border border-gray-200 rounded-md my-10 flex flex-col gap-10">
         {preview ? (
           <PostPreview title={title} content={content} />
         ) : (

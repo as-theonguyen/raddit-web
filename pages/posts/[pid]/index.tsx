@@ -34,7 +34,7 @@ const PostPage = () => {
     return <div>Loading...</div>;
 
   return (
-    <main className="w-full flex flex-col items-center gap-4 mt-10">
+    <main className="w-full flex flex-col items-center gap-4 py-10">
       <section className="bg-white p-4 rounded-md border border-gray-200 w-11/12 max-w-4xl">
         <h1 className="font-bold text-4xl mb-2">{postQuery.data.title}</h1>
         <p className="mb-10">{postQuery.data.user.username}</p>

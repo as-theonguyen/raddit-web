@@ -56,8 +56,8 @@ const EditPostPage = ({ post }: Props) => {
   if (postQuery.isLoading) return <div>Loading...</div>;
 
   return (
-    <main className="w-full h-screen flex gap-4 justify-center items-center">
-      <div className="w-11/12 max-w-4xl bg-white p-8 border border-gray-200 flex flex-col gap-10">
+    <main className="w-full min-h-screen flex gap-4 justify-center items-center">
+      <div className="w-11/12 max-w-4xl bg-white p-8 border border-gray-200 my-10 rounded-md flex flex-col gap-10">
         {preview ? (
           <PostPreview title={title} content={content} />
         ) : (
