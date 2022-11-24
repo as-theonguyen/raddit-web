@@ -99,7 +99,7 @@ const PublicUserProfilePage = () => {
           View all posts by this user
         </ProfileLink>
 
-        {meQuery.data ? (
+        {meQuery.data && meQuery.data.id !== uid ? (
           followersQuery.data.some(
             (u: UserType) => u.id === meQuery.data.id
           ) ? (

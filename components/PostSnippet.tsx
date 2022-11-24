@@ -27,6 +27,13 @@ const PostSnippet = ({ post }: Props) => {
       queryClient.setQueryData(['posts'], (existingPosts: any) => {
         return existingPosts.filter((p: PostType) => p.id !== post.id);
       });
+
+      queryClient.setQueryData(
+        ['user', meQuery.data.id, 'posts'],
+        (existingPosts: any) => {
+          return existingPosts.filter((p: PostType) => p.id !== post.id);
+        }
+      );
     },
   });
 
