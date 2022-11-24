@@ -15,7 +15,7 @@ const FeedPage = () => {
   const feedQuery = useQuery({
     queryKey: ['feed'],
     queryFn: () => feed(meQuery.data.id),
-    enabled: !!meQuery.data.id,
+    enabled: !!meQuery.data?.id,
   });
 
   if (feedQuery.isLoading) return <div>Loading...</div>;

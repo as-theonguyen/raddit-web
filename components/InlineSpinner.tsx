@@ -1,7 +1,7 @@
 const InlineSpinner = () => {
   return (
     <svg
-      className="inline mr-2 w-4 h-4 text-blue-600 animate-spin fill-gray-50"
+      className="inline mr-2 w-4 h-4 text-blue-400 animate-spin fill-gray-50"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
