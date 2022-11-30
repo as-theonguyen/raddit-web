@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   comment: CommentType;
-  currentUserId: string;
+  currentUserId?: string;
   postId: string;
 }
 

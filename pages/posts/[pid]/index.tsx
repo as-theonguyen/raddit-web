@@ -49,7 +49,7 @@ const PostPage = () => {
         return (
           <Comment
             postId={pid as string}
-            currentUserId={meQuery.data.id}
+            currentUserId={meQuery.data?.id}
             key={comment.id}
             comment={comment}
           />
